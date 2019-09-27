@@ -26,10 +26,15 @@ public class Rocket : MonoBehaviour
 
     //body references
     Transform bodyTransform;
-
+    
     //Animator references
     Animator animator;
 
+    //Auudio controller Reference
+    AudioController audioController;
+
+    //Camera reference
+    [SerializeField] Camera mainCamera;
     //Statics
     public static float globalGravity = -9.81f;
     
@@ -42,6 +47,8 @@ public class Rocket : MonoBehaviour
         rb = transform.Find("Body").GetComponent<Rigidbody>();
         timeToLaunch = TIMER_FROM_LAUNCH_TO_IDLE;
         bodyTransform = transform.Find("Body");
+        audioController = GetComponent<AudioController>();
+        mainCamera = FindObjectOfType<Camera>();
     }
 
     // Update is called once per frame
@@ -176,5 +183,9 @@ public class Rocket : MonoBehaviour
         rb.velocity = Vector3.zero;
         thrustsAreOn = true;
         rb.useGravity = false;
+        //Must be played and keep playing the whole game and never touched
+        AudioSource EngineAudio = audioController.Getaudio("EngineAudio");
+        EngineAudio.Play();
+        mainCamera.GetComponent<CameraFollow>().enabled = true;
     }   
 }
