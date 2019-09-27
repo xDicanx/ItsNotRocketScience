@@ -228,7 +228,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: afa34a8748c82294d8c76c0493fcdd59, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 3.9
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: afa34a8748c82294d8c76c0493fcdd59, type: 3}
       propertyPath: m_LocalPosition.z
@@ -344,18 +344,52 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 947848008, guid: afa34a8748c82294d8c76c0493fcdd59, type: 3}
       propertyPath: tiltAngle
-      value: 0.143
+      value: 0.04
       objectReference: {fileID: 0}
     - target: {fileID: 947848008, guid: afa34a8748c82294d8c76c0493fcdd59, type: 3}
       propertyPath: rotationSpeed
-      value: 0.6
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 947848008, guid: afa34a8748c82294d8c76c0493fcdd59, type: 3}
       propertyPath: maxUpSpeed
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 947848008, guid: afa34a8748c82294d8c76c0493fcdd59, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 947848008, guid: afa34a8748c82294d8c76c0493fcdd59, type: 3}
+      propertyPath: maxDownSpeed
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 947848008, guid: afa34a8748c82294d8c76c0493fcdd59, type: 3}
+      propertyPath: maxLeftSpeed
+      value: 4.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 947848008, guid: afa34a8748c82294d8c76c0493fcdd59, type: 3}
+      propertyPath: maxRightSpeed
       value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: afa34a8748c82294d8c76c0493fcdd59, type: 3}
+--- !u!1 &1833767629 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100004, guid: afa34a8748c82294d8c76c0493fcdd59,
+    type: 3}
+  m_PrefabInstance: {fileID: 947848006}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1833767630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1833767629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8d7a775604f2ff47b0089a29a8dd8ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1969624982971926372
 PrefabInstance:
   m_ObjectHideFlags: 0

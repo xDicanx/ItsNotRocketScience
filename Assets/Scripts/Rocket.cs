@@ -7,13 +7,18 @@ public class Rocket : MonoBehaviour
     [SerializeField] float launchForce;
     [SerializeField] float TIMER_FROM_LAUNCH_TO_IDLE;
     private float timeToLaunch;
+
     //Movement
-    [SerializeField]float maxUpSpeed;
-    float speedDv;
+    [SerializeField]float maxUpSpeed = 0f;
+    [SerializeField] float maxDownSpeed = 0f;
+    [SerializeField] float maxLeftSpeed = 0f;
+    [SerializeField] float maxRightSpeed = 0f;
+
+
     //Rotation
     [Range(0.0f,.5f)]
     [SerializeField]float tiltAngle = 0.5f;
-    [Range(0.0f, 1f)]
+    
     [SerializeField] float rotationSpeed;
     private bool thrustsAreOn = false;
     private bool shipIsReadyToFly;
@@ -24,6 +29,12 @@ public class Rocket : MonoBehaviour
 
     //Animator references
     Animator animator;
+
+    //Statics
+    public static float globalGravity = -9.81f;
+    
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -36,12 +47,7 @@ public class Rocket : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //To do
-
-        //Move spaceship upward
-        //Move spaceship downward
-        //move spaceship to the right/left
-        //land
+        //land (raycast to the ground, if is touching a button saying to land
         
         if (!thrustsAreOn)
         {
@@ -50,14 +56,43 @@ public class Rocket : MonoBehaviour
         else
         {
             ThrustUpwards();
+            ThrustDownwards();
             MoveSideWays();
         }
+        
     }
+
+    private void ThrustDownwards()
+    {
+        if (Input.GetKey(KeyCode.S))
+        {
+            //Then move down ward
+            //Less energy from the thursts
+            rb.AddForce(globalGravity * Vector3.up * maxDownSpeed, ForceMode.Acceleration);
+        }
+
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            //Stop moving
+            //Idle
+            //idle energy from the thursts
+            rb.velocity = Vector3.zero;
+        }
+    }
+
     private void ThrustUpwards()
     {
-        //Pending
-        
-        
+        if (Input.GetKey(KeyCode.W))
+        {
+            //up energy consume from the thursts
+            rb.AddForce(-globalGravity * Vector3.up * maxUpSpeed, ForceMode.Acceleration);
+        }
+
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            //idle energy from the thursts
+            rb.velocity = Vector3.zero;
+        }
     }
 
     private void MoveSideWays()
@@ -66,8 +101,7 @@ public class Rocket : MonoBehaviour
         if (Input.GetKey(KeyCode.D))
         {
             //Moves to the right
-
-
+            //back thursts energy consume
             if (bodyTransform.rotation.x < -.5f + tiltAngle)
             {
                 //Moves slowly to the right
@@ -79,14 +113,17 @@ public class Rocket : MonoBehaviour
             else
             {
                 //Move at max speed
-                rb.velocity = Vector3.right;
+                rb.velocity = Vector3.right * maxRightSpeed;
             }
                 
             
         }
+       
         else if (Input.GetKey(KeyCode.A))
         {
             //Moves to the left
+            //Front thursts energy consume
+            Debug.Log(bodyTransform.eulerAngles);
             
             if (bodyTransform.rotation.x > -.5f - tiltAngle)
             {
@@ -98,8 +135,9 @@ public class Rocket : MonoBehaviour
             else
             {
                 //Moves at max speed
-                rb.velocity = Vector3.left;
+                rb.velocity = Vector3.left * maxLeftSpeed;
             }
+            
         }
         else
         {
@@ -117,8 +155,6 @@ public class Rocket : MonoBehaviour
             }
             
         }
-        
-       
         
     }
     private void StartThrusts()
