@@ -23,7 +23,7 @@ public class Rocket : MonoBehaviour
     [Range(0.0f,.5f)]
     [SerializeField]float tiltAngle = 0.5f;
     
-    [SerializeField] float rotationSpeed;
+    [SerializeField] float rotationSpeed = 0.0f;
     private bool thrustsAreOn = false;
     private bool shipIsReadyToFly;
     private Rigidbody rb;

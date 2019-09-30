@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class AudioController : MonoBehaviour
 {
-    [SerializeField] private AudioClip clipEngine;
+    [SerializeField] private AudioClip clipEngine = null;
     [Range(0, 1)]
-    [SerializeField] private float clipEngineVolume;
+    [SerializeField] private float clipEngineVolume = 0.0f;
 
 
     //

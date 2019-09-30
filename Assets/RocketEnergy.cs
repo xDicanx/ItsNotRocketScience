@@ -5,13 +5,13 @@ using UnityEngine.UI;
 
 public class RocketEnergy : MonoBehaviour
 {
-    [SerializeField] private float maxEnergy;
-    [SerializeField] private float energyConsumePerSecond;
+    [SerializeField] private float maxEnergy = 0.0f;
+    [SerializeField] private float energyConsumePerSecond = 0.0f;
 
-    private float actualEnergy;
+    private float actualEnergy = 0.0f;
     private bool isRocketConsumingEnergy = false;
     
-    [SerializeField] Slider energySlider;
+    [SerializeField] Slider energySlider = null;
 
     // Start is called before the first frame update
     void Start()
