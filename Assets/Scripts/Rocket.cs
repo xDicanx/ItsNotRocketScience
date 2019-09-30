@@ -4,15 +4,19 @@ using UnityEngine;
 
 public class Rocket : MonoBehaviour
 {
-    [SerializeField] float launchForce;
-    [SerializeField] float TIMER_FROM_LAUNCH_TO_IDLE;
-    private float timeToLaunch;
+    //Script Reference variables
+    RocketEnergy rocketEnergy;
+
+    //
+    [SerializeField] float launchForce = 0.0f;
+    [SerializeField] float TIMER_FROM_LAUNCH_TO_IDLE = 0.0f;
+    private float timeToLaunch = 0.0f;
 
     //Movement
-    [SerializeField]float maxUpSpeed = 0f;
-    [SerializeField] float maxDownSpeed = 0f;
-    [SerializeField] float maxLeftSpeed = 0f;
-    [SerializeField] float maxRightSpeed = 0f;
+    [SerializeField]float maxUpSpeed = 0.0f;
+    [SerializeField] float maxDownSpeed = 0.0f;
+    [SerializeField] float maxLeftSpeed = 0.0f;
+    [SerializeField] float maxRightSpeed = 0.0f;
 
 
     //Rotation
@@ -33,6 +37,8 @@ public class Rocket : MonoBehaviour
     //Auudio controller Reference
     AudioController audioController;
 
+    
+
     //Camera reference
     [SerializeField] Camera mainCamera;
     //Statics
@@ -49,6 +55,7 @@ public class Rocket : MonoBehaviour
         bodyTransform = transform.Find("Body");
         audioController = GetComponent<AudioController>();
         mainCamera = FindObjectOfType<Camera>();
+        rocketEnergy = GetComponent<RocketEnergy>();
     }
 
     // Update is called once per frame
@@ -130,8 +137,6 @@ public class Rocket : MonoBehaviour
         {
             //Moves to the left
             //Front thursts energy consume
-            Debug.Log(bodyTransform.eulerAngles);
-            
             if (bodyTransform.rotation.x > -.5f - tiltAngle)
             {
                 //Moves slowly to the left
@@ -186,6 +191,8 @@ public class Rocket : MonoBehaviour
         //Must be played and keep playing the whole game and never touched
         AudioSource EngineAudio = audioController.Getaudio("EngineAudio");
         EngineAudio.Play();
+        rocketEnergy.StartConsumingEnergy();
         mainCamera.GetComponent<CameraFollow>().enabled = true;
-    }   
+    }
+
 }
