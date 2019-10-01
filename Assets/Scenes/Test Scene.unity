@@ -139,11 +139,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: afa34a8748c82294d8c76c0493fcdd59, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.69
+      value: 0.09
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: afa34a8748c82294d8c76c0493fcdd59, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 19.44
+      value: 23.377
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: afa34a8748c82294d8c76c0493fcdd59, type: 3}
       propertyPath: m_LocalPosition.z
@@ -581,12 +581,12 @@ PrefabInstance:
     - target: {fileID: 1969624984365048596, guid: 8cbf83055c193b041b8410bc7fadb3ac,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.69
+      value: 0.53
       objectReference: {fileID: 0}
     - target: {fileID: 1969624984365048596, guid: 8cbf83055c193b041b8410bc7fadb3ac,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 18.9557
+      value: 20.83
       objectReference: {fileID: 0}
     - target: {fileID: 1969624984365048596, guid: 8cbf83055c193b041b8410bc7fadb3ac,
         type: 3}
@@ -647,6 +647,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Main Camera
       objectReference: {fileID: 0}
+    - target: {fileID: 5356138193643011580, guid: 264fe57761c74864abc553f71da62e26,
+        type: 3}
+      propertyPath: field of view
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 5356138193643011580, guid: 264fe57761c74864abc553f71da62e26,
+        type: 3}
+      propertyPath: m_ClearFlags
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5356138193643011579, guid: 264fe57761c74864abc553f71da62e26,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -701,16 +711,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5356138193643011580, guid: 264fe57761c74864abc553f71da62e26,
-        type: 3}
-      propertyPath: field of view
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 5356138193643011580, guid: 264fe57761c74864abc553f71da62e26,
-        type: 3}
-      propertyPath: m_ClearFlags
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1707693188, guid: 264fe57761c74864abc553f71da62e26, type: 3}
       propertyPath: target

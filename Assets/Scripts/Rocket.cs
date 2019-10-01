@@ -120,7 +120,6 @@ public class Rocket : MonoBehaviour
             {
                 //Moves slowly to the right
                 rb.velocity = Vector3.right * .5f;
-                Debug.Log("Onwards speed: "+ rb.velocity);
                 //Rotates spaceship to the front
                 bodyTransform.Rotate(rotationSpeed, 0, 0, Space.Self);
             }
@@ -129,8 +128,6 @@ public class Rocket : MonoBehaviour
                 //Move at max speed
                 rb.velocity = Vector3.right * maxRightSpeed;
             }
-                
-            
         }
        
         else if (Input.GetKey(KeyCode.A))
@@ -169,6 +166,7 @@ public class Rocket : MonoBehaviour
         }
         
     }
+
     private void StartThrusts()
     {
         if (Input.GetKeyDown(KeyCode.Space) && !thrustsAreOn)
@@ -176,6 +174,7 @@ public class Rocket : MonoBehaviour
             StartCoroutine(WaitForIdlePosition());
         }
     }
+
     IEnumerator WaitForIdlePosition()
     {
         
