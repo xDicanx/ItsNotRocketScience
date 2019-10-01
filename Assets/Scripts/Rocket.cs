@@ -13,20 +13,22 @@ public class Rocket : MonoBehaviour
     private float timeToLaunch = 0.0f;
 
     //Movement
-    [SerializeField]float maxUpSpeed = 0.0f;
-    [SerializeField] float maxDownSpeed = 0.0f;
-    [SerializeField] float maxLeftSpeed = 0.0f;
-    [SerializeField] float maxRightSpeed = 0.0f;
+    [Header("Ship Movement")]
+    [SerializeField] float maxAcceleration = 0.0f;
+    [SerializeField] private float accelerationDrag = 0.25f;
+    [SerializeField] private float desaccelerationDrag = 2f;
+    private float desaccelerationTimer = 0.0f;
 
-
-    //Rotation
+     //Rotation
     [Range(0.0f,.5f)]
     [SerializeField]float tiltAngle = 0.5f;
-    
     [SerializeField] float rotationSpeed = 0.0f;
     private bool thrustsAreOn = false;
-    private bool shipIsReadyToFly;
     private Rigidbody rb;
+
+    [Header("Land")]
+    [SerializeField] Vector3 landPositionOffset;
+    Vector3 landPositionTarget;
 
     //body references
     Transform bodyTransform;
@@ -37,15 +39,10 @@ public class Rocket : MonoBehaviour
     //Auudio controller Reference
     AudioController audioController;
 
-    
-
     //Camera reference
     [SerializeField] Camera mainCamera;
     //Statics
-    public static float globalGravity = -9.81f;
     
-
-
     // Start is called before the first frame update
     void Start()
     {
@@ -56,115 +53,25 @@ public class Rocket : MonoBehaviour
         audioController = GetComponent<AudioController>();
         mainCamera = FindObjectOfType<Camera>();
         rocketEnergy = GetComponent<RocketEnergy>();
+        desaccelerationTimer = Mathf.Epsilon;
     }
 
     // Update is called once per frame
     void Update()
     {
-        //land (raycast to the ground, if is touching a button saying to land
-        
         if (!thrustsAreOn)
-        {
             StartThrusts();
-        }
         else
-        {
-            ThrustUpwards();
-            ThrustDownwards();
-            MoveSideWays();
-        }
-        
+            ShipMovement();
+        //Test area
+        Land();
     }
-
-    private void ThrustDownwards()
+    private void Land()
     {
-        if (Input.GetKey(KeyCode.S))
+        if (Input.GetKey(KeyCode.L))
         {
-            //Then move down ward
-            //Less energy from the thursts
-            rb.AddForce(globalGravity * Vector3.up * maxDownSpeed, ForceMode.Acceleration);
+            bodyTransform.position = Vector3.MoveTowards(bodyTransform.position, landPositionTarget + landPositionOffset, Time.deltaTime * 1);
         }
-
-        if (Input.GetKeyUp(KeyCode.Space))
-        {
-            //Stop moving
-            //Idle
-            //idle energy from the thursts
-            rb.velocity = Vector3.zero;
-        }
-    }
-
-    private void ThrustUpwards()
-    {
-        if (Input.GetKey(KeyCode.W))
-        {
-            //up energy consume from the thursts
-            rb.AddForce(-globalGravity * Vector3.up * maxUpSpeed, ForceMode.Acceleration);
-        }
-
-        if (Input.GetKeyUp(KeyCode.Space))
-        {
-            //idle energy from the thursts
-            rb.velocity = Vector3.zero;
-        }
-    }
-
-    private void MoveSideWays()
-    {
-        
-        if (Input.GetKey(KeyCode.D))
-        {
-            //Moves to the right
-            //back thursts energy consume
-            if (bodyTransform.rotation.x < -.5f + tiltAngle)
-            {
-                //Moves slowly to the right
-                rb.velocity = Vector3.right * .5f;
-                //Rotates spaceship to the front
-                bodyTransform.Rotate(rotationSpeed, 0, 0, Space.Self);
-            }
-            else
-            {
-                //Move at max speed
-                rb.velocity = Vector3.right * maxRightSpeed;
-            }
-        }
-       
-        else if (Input.GetKey(KeyCode.A))
-        {
-            //Moves to the left
-            //Front thursts energy consume
-            if (bodyTransform.rotation.x > -.5f - tiltAngle)
-            {
-                //Moves slowly to the left
-                rb.velocity = Vector3.left * .5f;
-                //Rotates spaceship to the left
-                bodyTransform.Rotate(-rotationSpeed, 0, 0, Space.Self);
-            }
-            else
-            {
-                //Moves at max speed
-                rb.velocity = Vector3.left * maxLeftSpeed;
-            }
-            
-        }
-        else
-        {
-            //starts idling again
-            rb.velocity = Vector3.zero;
-
-            if (bodyTransform.rotation.x > -0.5f)
-            {
-                //Rotates spaceship to the front
-                bodyTransform.Rotate(-rotationSpeed, 0, 0, Space.Self);
-            }
-            if (bodyTransform.rotation.x < -0.5f)
-            {
-                bodyTransform.Rotate(rotationSpeed, 0, 0, Space.Self);
-            }
-            
-        }
-        
     }
 
     private void StartThrusts()
@@ -177,7 +84,7 @@ public class Rocket : MonoBehaviour
 
     IEnumerator WaitForIdlePosition()
     {
-        
+
         while (timeToLaunch > 0)
         {
             rb.velocity = Vector3.up * launchForce;
@@ -194,4 +101,61 @@ public class Rocket : MonoBehaviour
         mainCamera.GetComponent<CameraFollow>().enabled = true;
     }
 
+    #region SHIP MOVEMENT
+    private void ShipMovement()
+    {
+        if (Input.GetKey(KeyCode.W))
+        {
+            //moves upward
+            //Todo when pressing W will consume more energy
+            StartAccelerating();
+            rb.AddForce(Vector3.up * maxAcceleration, ForceMode.Acceleration);
+        }
+
+        if (Input.GetKey(KeyCode.S))
+        {
+            //move downwards
+            StartAccelerating();
+            rb.AddForce(Vector3.down * maxAcceleration, ForceMode.Acceleration);
+        }
+        
+        if (Input.GetKey(KeyCode.D))
+        {
+            //Moves to the right
+            StartAccelerating();
+            rb.AddForce(Vector3.right * maxAcceleration, ForceMode.Acceleration);
+        }
+        
+        if (Input.GetKey(KeyCode.A))
+        {
+            //Moves to the Left
+            StartAccelerating();
+            rb.AddForce(Vector3.left * maxAcceleration, ForceMode.Acceleration);
+        }
+        
+        StopAccelerating();
+    }
+
+    private void StartAccelerating()
+    {
+        rb.drag = accelerationDrag;
+        desaccelerationTimer = Mathf.Epsilon;
+    }
+
+    private void StopAccelerating()
+    {
+        if (desaccelerationTimer <= 0)
+        {
+            rb.drag = desaccelerationDrag; 
+        }
+        else
+        {
+            desaccelerationTimer -= Time.deltaTime;
+        }
+    }
+    #endregion SHIP MOVEMENT
+    public void LandPositionUpdate(Vector3 _landPositionTarget)
+    {
+        landPositionTarget = _landPositionTarget;
+    }
 }
